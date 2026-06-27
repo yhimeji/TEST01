@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="JS">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ゆりちゃんクイズ～あなたは何問解けるのか</title>
+  <style>
+    body {
+        font-family: 'Helvetica Neue', Arial, sans-serif; /* ① 文字の種類（フォント） */
+        background-color: #eef9ff;                      /* ② 背景の色 */
+        color: #333;                                    /* ③ 文字の色 */
+        text-align: center;                               /* ④ 文字やボタンを真ん中に寄せる */
+        padding: 20px;                                    /* ⑤ 画面の内側の余白 */
+        margin: 0;                                        /* ⑥ 画面の外側の余白をゼロにする */
+    }
+    /* 「クイズを入れる白い四角い箱」のデザインを指定 */
+    .quiz-container {
+        background-color: white;                    /* ① 箱の背景を白にする */
+        border-radius: 20px;                          /* ② カドを丸くする */
+        padding: 20px;                                /* ③ 箱の内側の余白 */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);     /* ④ ふんわりした影をつける */
+        max-width: 500px;                             /* ⑤ 箱の最大の横幅 */
+        margin: 0 auto;                               /* ⑥ 箱自体を画面の真ん中に置く */
+    }
+      /*HTMLの <h1> タグ（クイズのタイトル「たのしいクイズ」）のデザイン*/
+      h1 {
+          color: #ff6f61;
+          font-size: 24px;
+      }
+      /*HTMLで class="question" と名前をつけた、問題文（「りんごの色は なにいろ？」）のデザインです。*/
+      .question {
+          font-size: 22px;
+          font-weight: bold;
+          margin: 20px 0;
+      }
+      /*ここが一番のこだわりポイント！クイズの選択肢ボタンのデザインです。*/
+      .btn {
+          display: block;        /* ① ボタンを縦に並べる（1行まるごと使う） */
+          width: 100%;           /* ② ボタンの横幅を箱いっぱいに広げる */
+          background-color: #4caf50; /* ③ ボタンの背景色を「みどり」にする */
+          color: white;          /* ④ ボタンの中の文字を「白」にする */
+          border: none;          /* ⑤ 最初からあるグレーのダサい枠線を消す */
+          padding: 15px;         /* ⑥ ボタンの内側の余白（上下左右に15px） */
+          margin: 10px 0;        /* ⑦ ボタンとボタンの間の隙間（上下に10px） */
+          font-size: 18px;       /* ⑧ ボタンの文字を大きくする */
+          border-radius: 10px;   /* ⑨ ボタンのカドを少し丸くする */
+          cursor: pointer;       /* ⑩ マウスが乗ったら指マークにする */
+          box-shadow: 0 4px #388e3c; /* ⑪ ボタンの下に「濃いみどり」の影をつけて立体的にする */
+          -webkit-tap-highlight-color: transparent; /* ⑫ iPhone特有のタップ時の青い影を消す */
+      }
+      /*ボタンが「タップされている瞬間（指が触れている間）」だけ、このデザインに変身します。*/
+      .btn:active {
+          box-shadow: 0 0 #388e3c;
+          transform: translateY(4px);
+      }
+      .result {
+          font-size: 28px;
+          font-weight: bold;
+          margin-top: 20px;
+          min-height: 40px;
+      }
+      .seikai { color: #ff3b30; } /* 正解のときは、文字を「あか」にする */
+      .hazei { color: #007aff; }  /* 不正解のときは、文字を「あお」にする */
+  </style>
+</head>
+
+<body>
+  <div class="quiz-container">
+      <h1>🔴 1問目 🔵</h1>
+      <div class="question" id="question">ドズル社でゆりちゃんの推しは誰？</div>
+      <button class="btn" onclick="checkAnswer(1)">1. ドズル</button>
+      <button class="btn" onclick="checkAnswer(2)">2. おんりー</button>
+      <button class="btn" onclick="checkAnswer(3)">3. ぼんじゅうる</button>
+      
+      <div class="result" id="result1"></div>
+  </div>
+  <div></div>
+  <div class="quiz-container">
+      <h1>🔴 2問目 🔵</h1>
+      <div class="question" id="question">シクフォニでゆりちゃんの推しは誰？</div>
+      <button class="btn" onclick="checkAnswer2(1)">1. いるま</button>
+      <button class="btn" onclick="checkAnswer2(2)">2. こさめ</button>
+      <button class="btn" onclick="checkAnswer2(3)">3. すち</button>
+      
+      <div class="result" id="result2"></div>
+  </div>
+  <div></div>
+  <div class="quiz-container">
+      <h1>🔴 3問目 🔵</h1>
+      <div class="question" id="question">スプラ3で好きな武器はなに？</div>
+      <button class="btn" onclick="checkAnswer3(1)">1. 14式竹筒銃・甲</button>
+      <button class="btn" onclick="checkAnswer3(2)">2. スクイックリン</button>
+      <button class="btn" onclick="checkAnswer3(3)">3. ヴァリアブルローラー</button>
+      
+      <div class="result" id="result3"></div>
+  </div>
+
+
+  <script>
+      function checkAnswer(isCorrect) {
+          const resultDiv = document.getElementById('result1');
+          if (isCorrect === 1) {
+              resultDiv.innerHTML = "<span class='hazei'>❌ ざんねん！ あーちんはドズルおs…</span>";
+          } else if (isCorrect === 2) {
+              resultDiv.innerHTML = "<span class='seikai'>⭕ せいかい！ すごいね！</span>";
+          } else {
+              resultDiv.innerHTML = "<span class='hazei'>❌ ざんねん！ こんな人いたっけ？</span>";
+          }
+      }
+  </script>
+  <script>
+    function checkAnswer2(isCorrect) {
+      const resultDiv = document.getElementById('result2');
+      if (isCorrect === 1) {
+          resultDiv.innerHTML = "<span class='hazei'>❌ ざんねん！ こりゃ魔入りましたね</span>";
+      } else if (isCorrect === 2) {
+          resultDiv.innerHTML = "<span class='hazei'>❌ ざんねん！ これはあーちんの推し</span>";
+      } else {
+          resultDiv.innerHTML = "<span class='seikai'>⭕ せいかい！ 分かってるね！</span>";
+      }
+    }
+  </script>
+  <script>
+    function checkAnswer3(isCorrect) {
+      const resultDiv = document.getElementById('result3');
+      if (isCorrect === 1) {
+          resultDiv.innerHTML = "<span class='hazei'>❌ ざんねん！ たけっておまっ…( ´∀｀ )</span>";
+      } else if (isCorrect === 2) {
+          resultDiv.innerHTML = "<span class='seikai'>⭕ せいかい！ よく見てるね！</span>";
+      } else {
+          resultDiv.innerHTML = "<span class='hazei'>❌ ざんねん！ これはあーちんの得意なやつな</span>";
+      }
+    }
+  </script>
+
+</body>
+</html>
